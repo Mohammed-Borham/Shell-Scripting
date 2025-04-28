@@ -1,5 +1,5 @@
 # Fawry Internship Task
-## First Task: Mini grep
+## First Task: Mini Grep
 
 ## 📜 Reflective Section
 
@@ -68,5 +68,43 @@ This logic ensured that the pattern and the file were correctly assigned, and it
 ## 📸 Screenshots
 
 Here are the screenshot of the terminal running the script:
-- [](./screenshots/Mini-grep.png)
+![](./screenshots/Mini-grep.png)
+---
+## Second Task: The Scenario
+### Internal Dashboard Connectivity Lab
+
+This repo documents a simulated troubleshooting exercise for an internal web dashboard (`my-web-server`) that became unreachable. We built a small three-VM lab, diagnosed DNS/network issues, and restored full connectivity.
+
+---
+
+### 🔧 Lab Setup
+
+We deployed **three Virtual Machines** on an isolated “Internal Network”:
+
+| VM     | Role        | IP Address      | 
+|--------|-------------|-----------------|
+| DNS    | BIND9 server| `192.168.1.20` |
+| Web    | Apache HTTPD| `192.168.1.18` |
+| Client | Test host   | `192.168.1.19` | 
+
+---
+
+### 🛠 Troubleshooting Steps & Fixes
+
+| Problem                                              | Solution                                                                            | Screenshot                                |
+|------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------------------------------|
+| DNS server only answered on localhost                | Reconfigured BIND to listen on all interfaces                                       | ![Fig1](screenshots/fig1_named_status.png) |
+| Client using wrong DNS                                | Pointed the client’s resolver to our internal DNS VM (`192.168.1.20`)               | ![Fig2](screenshots/fig2_resolv_conf.png)  |
+| Firewall blocking DNS                                 | Opened port 53 on the DNS VM’s firewall                                             | ![Fig3](screenshots/fig3_firewall_dns.png) |
+| Zone file misconfigured                               | Fixed A-record in the zone file to point `my-web-server` → `192.168.1.18`           | ![Fig4](screenshots/fig4_zone_file.png)    |
+| Firewall blocking HTTP/HTTPS                          | Opened ports 80 & 443 on the Web VM’s firewall                                      | ![Fig5](screenshots/fig5_firewall_http.png)|
+| Self-signed cert warnings                             | Trusted the self-signed certificate on the Client or swapped in a CA-signed cert     | ![Fig6](screenshots/fig6_curl_https.png)   |
+
+---
+
+### 🏆 Bonus: DNS Bypass via `/etc/hosts`
+
+To prove connectivity even with DNS broken, we added a hosts-file override on the client:
+![Fig7](screenshots/fig7_bonus.png) 
+```text
 
