@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Define usage function
 usage() {
     echo "Usage: $0 [options] 'pattern' [file]"
     echo "Search for patterns in files (case-insensitive)"
@@ -12,13 +11,11 @@ usage() {
     exit 0
 }
 
-# Initialize options
 show_line_numbers=0
 invert_match=0
 pattern=""
 file=""
 
-# Parse options
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -n)
@@ -38,11 +35,11 @@ while [[ $# -gt 0 ]]; do
             usage
             ;;
         -*)
-            echo "Error: Unknown option $1" >&2
+            echo "Error: Unknown option $1" 
             exit 1
             ;;
         *)
-            # Assign non-option arguments: first is pattern, second is file
+            
             if [[ -z "$pattern" ]]; then
                 pattern="$1"
             else
@@ -54,27 +51,25 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-# Check if pattern resembles a .txt filename (case-insensitive)
 if [[ "${pattern,,}" == *.txt ]]; then
-    echo "Error: Pattern '$pattern' looks like a filename. Did you swap the pattern and file?" >&2
-    echo "Example: $0 'search_term' file.txt" >&2
+    echo "Error: Pattern '$pattern' looks like a filename. Did you forget the pattern?" 
+    echo "Example: $0 'search_term' file-name" 
     exit 1
 fi
 
 
 if [ -z "$file" ]; then
-    echo "Error: No file provided" >&2
-    echo "See './mygrep.sh  --help'" >&2
+    echo "Error: No file provided" 
+    echo "See './mygrep.sh  --help'" 
     exit 1
 else
 	if [ ! -f "$file" ]; then
-		echo "Error: File '$file' not found" >&2
+		echo "Error: File '$file' not found"
 		exit 1
 	fi
 fi
 
 
-# Perform the search
 line_number=0
 while IFS= read -r line; do
     line_number=$((line_number + 1))
