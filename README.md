@@ -1,4 +1,3 @@
-# Fawry Internship Task
 ## First Task: Mini Grep
 
 ## 📜 Reflective Section
